@@ -1,0 +1,7 @@
+function mask = dynamicWS(mask,aggress)
+outside = ~imdilate(mask, strel('disk',1));%imshow(outside)
+middle = bwmorph(mask, 'skel', aggress);middle = imerode(middle, strel('disk',1));middle= bwmorph(middle,'clean');%imshow(middle)
+basin = imcomplement(bwdist(outside));%imshow(basin)
+basin = imimposemin(basin, middle | outside); %imshow(basin,[])
+L = watershed(basin);%imshow(L, [])
+mask = L > 1;%imshow(mask)
